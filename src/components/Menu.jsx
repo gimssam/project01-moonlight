@@ -83,8 +83,7 @@ function MenuSwiper({ items, panel }) {
       <Swiper
         className="menu-swiper"
         modules={[Autoplay, Pagination, Navigation]}
-        loop
-        loopAdditionalSlides={3}
+        rewind
         spaceBetween={24}
         slidesPerView={3}
         breakpoints={{
