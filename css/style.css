@@ -1,0 +1,894 @@
+/* ===== 기본 설정 — Clay 스타일 가이드(DESIGN-clay.md) 원본 컬러/토큰 그대로 적용 ===== */
+:root {
+  /* Primary / Ink */
+  --primary: #0a0a0a;
+  --primary-active: #1f1f1f;
+  --primary-disabled: #e5e5e5;
+  --ink: #0a0a0a;
+  --body: #3a3a3a;
+  --body-strong: #1a1a1a;
+  --muted: #6a6a6a;
+  --muted-soft: #9a9a9a;
+
+  /* Hairline */
+  --hairline: #e5e5e5;
+  --hairline-soft: #f0f0f0;
+
+  /* Surface (크림 톤 캔버스) */
+  --canvas: #fffaf0;
+  --surface-soft: #faf5e8;
+  --surface-card: #f5f0e0;
+  --surface-strong: #ebe6d6;
+
+  --on-primary: #ffffff;
+  --on-dark: #ffffff;
+
+  /* Brand — 6색 채도 카드 팔레트 */
+  --brand-pink: #ff4d8b;
+  --brand-teal: #1a3a3a;
+  --brand-lavender: #b8a4ed;
+  --brand-peach: #ffb084;
+  --brand-ochre: #e8b94a;
+  --brand-mint: #a4d4c5;
+  --brand-coral: #ff6b5a;
+
+  /* Semantic */
+  --success: #22c55e;
+  --warning: #f59e0b;
+  --error: #ef4444;
+
+  /* Radius */
+  --radius-xs: 6px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-pill: 9999px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Pretendard', 'Noto Sans KR', sans-serif;
+  background-color: var(--canvas);
+  color: var(--body);
+  font-weight: 400;
+  line-height: 1.75;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+ul {
+  list-style: none;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+section {
+  scroll-margin-top: 80px; /* 고정 내비게이션 높이만큼 여유 */
+}
+
+h1, h2, h3 {
+  font-weight: 500;
+  color: var(--ink);
+  letter-spacing: -0.02em;
+}
+
+.section-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 96px 24px;
+}
+
+.section-label {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  color: var(--muted);
+  margin-bottom: 16px;
+  text-transform: uppercase;
+}
+
+.section-title {
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  font-weight: 500;
+  margin-bottom: 24px;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  color: var(--ink);
+}
+
+/* 이미지 자리(플레이스홀더) — 넉넉한 라운드 + 클레이 파스텔 그라데이션 */
+.image-placeholder {
+  background: var(--surface-soft);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--hairline);
+  position: relative;
+  overflow: hidden;
+}
+
+.image-placeholder::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--brand-peach) 0%, var(--brand-lavender) 55%, var(--brand-mint) 100%);
+  opacity: 0.35;
+}
+
+/* ===== 1. 상단 고정 내비게이션 ===== */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  background: var(--canvas);
+  border-bottom: 1px solid var(--hairline-soft);
+}
+
+.navbar-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 18px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+}
+
+.nav-links {
+  display: flex;
+  gap: 32px;
+}
+
+.nav-links a {
+  color: var(--muted);
+  font-size: 0.875rem;
+  font-weight: 500;
+  position: relative;
+  padding-bottom: 4px;
+  transition: color 0.2s ease;
+}
+
+.nav-links a:hover {
+  color: var(--ink);
+}
+
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.nav-toggle span {
+  width: 24px;
+  height: 2px;
+  background-color: var(--ink);
+}
+
+/* ===== 2. 히어로 섹션 ===== */
+/* 슬로건 등장 시 은은한 페이드인 + 살짝 위로 올라오는 효과 */
+@keyframes heroFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: var(--canvas);
+  position: relative;
+  overflow: hidden;
+  padding: 0 24px;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+}
+
+.hero-eyebrow {
+  display: inline-block;
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+  opacity: 0;
+  animation: heroFadeUp 0.8s ease-out 0.1s forwards;
+}
+
+.hero-slogan {
+  font-size: clamp(2.4rem, 7vw, 4.6rem);
+  font-weight: 500;
+  color: var(--ink);
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  margin-bottom: 24px;
+  opacity: 0;
+  animation: heroFadeUp 0.9s ease-out 0.3s forwards;
+}
+
+.hero-sub {
+  color: var(--body);
+  font-weight: 400;
+  font-size: 1.05rem;
+  margin-bottom: 44px;
+  opacity: 0;
+  animation: heroFadeUp 0.9s ease-out 0.5s forwards;
+}
+
+.btn-primary {
+  display: inline-block;
+  background-color: var(--primary);
+  color: var(--on-primary);
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 14px 28px;
+  border: none;
+  border-radius: var(--radius-md);
+  transition: background-color 0.2s ease;
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-active);
+}
+
+.hero-content .btn-primary {
+  opacity: 0;
+  animation: heroFadeUp 0.9s ease-out 0.7s forwards;
+}
+
+/* ===== 3. 가게 소개 섹션 ===== */
+.about {
+  background-color: var(--surface-soft);
+}
+
+.about .section-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: center;
+}
+
+.about-text p {
+  font-size: 1.05rem;
+  font-weight: 400;
+  color: var(--body);
+  margin-bottom: 18px;
+}
+
+.about-image {
+  aspect-ratio: 4 / 5;
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--hairline);
+  overflow: hidden;
+  background: var(--surface-soft);
+}
+
+.about-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ===== 4. 메뉴 섹션 ===== */
+.menu {
+  background-color: var(--canvas);
+  text-align: center;
+}
+
+/* 메뉴 탭: Clay category-tab / category-tab-active (필 형태) */
+.menu-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 40px;
+  margin-bottom: 48px;
+}
+
+.menu-tab {
+  background: transparent;
+  border: none;
+  color: var(--muted);
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding: 8px 20px;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.menu-tab:hover {
+  color: var(--ink);
+}
+
+.menu-tab.active {
+  background-color: var(--surface-card);
+  color: var(--ink);
+}
+
+/* 메뉴 카드 그리드 */
+.menu-grid {
+  display: none;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  text-align: left;
+}
+
+.menu-grid.active {
+  display: grid;
+}
+
+.menu-card {
+  position: relative;
+  background: var(--surface-card);
+  color: var(--ink);
+  border-radius: var(--radius-xl);
+  padding: 32px 28px;
+}
+
+.menu-card-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.menu-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.menu-icon {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  color: inherit;
+  opacity: 0.85;
+}
+
+.menu-icon svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* 아이콘 스프라이트는 화면에 렌더링하지 않음 */
+.icon-sprite {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+/* Clay Do's: 카드 색상을 핑크 → 틸 → 라벤더 → 피치 → 오커 → 크림 순으로 순환 */
+.menu-grid .menu-card:nth-child(1) {
+  background: var(--brand-pink);
+  color: var(--on-dark);
+}
+
+.menu-grid .menu-card:nth-child(2) {
+  background: var(--brand-teal);
+  color: var(--on-dark);
+}
+
+.menu-grid .menu-card:nth-child(3) {
+  background: var(--brand-lavender);
+  color: var(--ink);
+}
+
+.menu-grid .menu-card:nth-child(4) {
+  background: var(--brand-peach);
+  color: var(--ink);
+}
+
+.menu-grid .menu-card:nth-child(5) {
+  background: var(--brand-ochre);
+  color: var(--ink);
+}
+
+.menu-grid .menu-card:nth-child(6) {
+  background: var(--surface-card);
+  color: var(--ink);
+}
+
+.menu-badge {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background-color: rgba(255, 255, 255, 0.92);
+  color: var(--primary);
+  border: 1px solid rgba(10, 10, 10, 0.08);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  padding: 4px 12px;
+  border-radius: var(--radius-pill);
+}
+
+.menu-name {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: inherit;
+  margin-top: 8px;
+  margin-bottom: 10px;
+}
+
+.menu-price {
+  font-size: 1rem;
+  font-weight: 600;
+  color: inherit;
+  margin-bottom: 12px;
+}
+
+.menu-desc {
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: inherit;
+  opacity: 0.75;
+}
+
+@media (max-width: 768px) {
+  .menu-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ===== 5. 위치·영업시간 섹션 ===== */
+.location {
+  background-color: var(--surface-soft);
+}
+
+.location .section-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+}
+
+.location-map {
+  min-height: 380px;
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--hairline);
+  overflow: hidden;
+  background: var(--surface-soft);
+}
+
+.location-map iframe {
+  width: 100%;
+  height: 100%;
+  min-height: 380px;
+  border: 0;
+  display: block;
+}
+
+.location-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 32px;
+}
+
+.info-block h3 {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+
+.info-block p {
+  color: var(--body);
+  font-weight: 400;
+}
+
+/* 주소 */
+.address-main {
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+/* 영업시간 그리드: 요일 카드를 한 줄로 표시 (좁은 화면에서는 가로 스크롤) */
+.hours-grid {
+  margin-top: 4px;
+}
+
+.hours-row {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+
+.hour-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  flex-shrink: 0;
+  min-width: 52px;
+  padding: 10px 8px;
+  border-radius: var(--radius-md);
+  background: var(--canvas);
+  border: 1px solid var(--hairline);
+  transition: border-color 0.2s ease;
+}
+
+.hour-day {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--body-strong);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.hour-time {
+  font-size: 0.68rem;
+  font-weight: 400;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+/* 오늘 요일: 날짜 원으로 강조 */
+.hour-cell.today {
+  border-color: var(--brand-ochre);
+}
+
+.hour-cell.today .hour-day {
+  background: var(--brand-ochre);
+  color: var(--ink);
+}
+
+/* ===== 6. 예약 문의 섹션 ===== */
+.reservation {
+  background-color: var(--surface-strong);
+}
+
+.reservation-form {
+  margin-top: 40px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px 20px;
+}
+
+.reservation-form[hidden] {
+  display: none;
+}
+
+.form-group.full {
+  grid-column: 1 / -1;
+}
+
+.reservation-form label {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--body-strong);
+  margin-bottom: 8px;
+}
+
+.reservation-form .required {
+  color: var(--error);
+  margin-left: 2px;
+}
+
+.reservation-form .optional {
+  color: var(--muted-soft);
+  font-size: 0.75rem;
+  font-weight: 400;
+  margin-left: 6px;
+}
+
+.reservation-form input,
+.reservation-form select,
+.reservation-form textarea {
+  width: 100%;
+  background: var(--canvas);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-md);
+  padding: 12px 16px;
+  color: var(--ink);
+  font-family: inherit;
+  font-weight: 400;
+  font-size: 0.95rem;
+  transition: border-color 0.2s ease;
+}
+
+.reservation-form input:focus,
+.reservation-form select:focus,
+.reservation-form textarea:focus {
+  outline: none;
+  border-color: var(--ink);
+}
+
+.reservation-form select {
+  cursor: pointer;
+}
+
+.reservation-form select option {
+  color: var(--ink);
+}
+
+.reservation-form input::placeholder,
+.reservation-form textarea::placeholder {
+  color: var(--muted-soft);
+}
+
+.reservation-form textarea {
+  resize: vertical;
+  min-height: 110px;
+}
+
+/* 유효성 검사 오류 표시 */
+.field-error {
+  display: none;
+  color: var(--error);
+  font-size: 0.8rem;
+  font-weight: 400;
+  margin-top: 6px;
+}
+
+.form-group.invalid input,
+.form-group.invalid select,
+.form-group.invalid textarea {
+  border-color: var(--error);
+  background: rgba(239, 68, 68, 0.06);
+}
+
+.form-group.invalid .field-error {
+  display: block;
+}
+
+.reservation-submit {
+  cursor: pointer;
+}
+
+.reservation-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.reservation-send-error {
+  margin-top: 10px;
+  font-size: 0.85rem;
+  color: var(--error);
+}
+
+/* 문의 접수 완료 메시지 — 민트 컬러 카드로 축하 톤 */
+.reservation-success {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 64px 24px;
+  border-radius: var(--radius-xl);
+  background: var(--brand-mint);
+}
+
+.reservation-success[hidden] {
+  display: none;
+}
+
+.success-icon {
+  font-size: 2.4rem;
+  margin-bottom: 16px;
+}
+
+.success-text {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--body-strong);
+  line-height: 1.8;
+}
+
+/* ===== 7. 푸터 ===== */
+footer {
+  background-color: var(--surface-soft);
+  color: var(--body);
+  text-align: center;
+  padding: 40px 24px;
+  font-size: 0.85rem;
+  font-weight: 400;
+  border-top: 1px solid var(--hairline-soft);
+}
+
+/* ===== 스크롤 등장 애니메이션 ===== */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.reveal.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* 움직임에 민감한 사용자를 위한 애니메이션 최소화 */
+@media (prefers-reduced-motion: reduce) {
+  .hero-eyebrow,
+  .hero-slogan,
+  .hero-sub,
+  .hero-content .btn-primary {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* ===== 반응형 ===== */
+@media (max-width: 768px) {
+  .nav-links {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: var(--canvas);
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+  }
+
+  .nav-links.open {
+    max-height: 300px;
+  }
+
+  .nav-links a {
+    width: 100%;
+    text-align: center;
+    padding: 18px 0;
+    border-bottom: 1px solid var(--hairline-soft);
+  }
+
+  .nav-toggle {
+    display: flex;
+  }
+
+  .about .section-inner,
+  .location .section-inner {
+    grid-template-columns: 1fr;
+  }
+
+  .reservation-form {
+    grid-template-columns: 1fr;
+  }
+
+  .section-inner {
+    padding: 72px 20px;
+  }
+}
+
+/* 작은 모바일 화면 전용 미세 조정 */
+@media (max-width: 480px) {
+  .section-inner {
+    padding: 56px 20px;
+  }
+
+  .navbar-inner {
+    padding: 16px 20px;
+  }
+
+  .logo {
+    font-size: 1.05rem;
+  }
+
+  .nav-links a {
+    font-size: 0.9rem;
+    padding: 16px 0;
+  }
+
+  .hero-eyebrow {
+    font-size: 0.68rem;
+    margin-bottom: 18px;
+  }
+
+  .hero-slogan {
+    font-size: 2.2rem;
+    margin-bottom: 16px;
+  }
+
+  .hero-sub {
+    font-size: 0.92rem;
+    margin-bottom: 32px;
+  }
+
+  .btn-primary {
+    padding: 12px 24px;
+    font-size: 0.85rem;
+  }
+
+  .about-text p {
+    font-size: 0.98rem;
+  }
+
+  .menu-tabs {
+    gap: 6px;
+    margin-top: 28px;
+    margin-bottom: 32px;
+  }
+
+  .menu-tab {
+    padding: 8px 16px;
+    font-size: 0.82rem;
+  }
+
+  .menu-card {
+    padding: 24px 20px;
+  }
+
+  .hour-cell {
+    min-width: 44px;
+    padding: 8px 6px;
+  }
+
+  .hour-day {
+    width: 24px;
+    height: 24px;
+    font-size: 0.78rem;
+  }
+
+  .hour-time {
+    font-size: 0.62rem;
+  }
+
+  .reservation-form {
+    gap: 16px;
+  }
+
+  .reservation-success {
+    padding: 48px 20px;
+  }
+}
