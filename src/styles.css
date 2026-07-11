@@ -345,20 +345,26 @@ h1, h2, h3 {
   color: var(--ink);
 }
 
-/* 메뉴 카드 그리드 */
-.menu-grid {
-  display: none;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
+/* 메뉴 카드 Swiper 슬라이더 */
+.menu-swiper-wrap {
+  position: relative;
+  margin-top: 40px;
   text-align: left;
 }
 
-.menu-grid.active {
-  display: grid;
+.menu-swiper {
+  overflow: hidden;
+  padding: 4px 4px 8px;
+}
+
+.menu-swiper .swiper-slide {
+  height: auto;
+  display: flex;
 }
 
 .menu-card {
   position: relative;
+  width: 100%;
   background: var(--surface-card);
   color: var(--ink);
   border-radius: var(--radius-xl);
@@ -399,33 +405,34 @@ h1, h2, h3 {
   overflow: hidden;
 }
 
-/* Clay Do's: 카드 색상을 핑크 → 틸 → 라벤더 → 피치 → 오커 → 크림 순으로 순환 */
-.menu-grid .menu-card:nth-child(1) {
+/* Clay Do's: 카드 색상을 핑크 → 틸 → 라벤더 → 피치 → 오커 → 크림 순으로 순환
+   (Swiper loop 모드가 슬라이드를 복제하므로 nth-child 대신 데이터 기반 클래스로 색을 고정) */
+.menu-card.menu-card-pink {
   background: var(--brand-pink);
   color: var(--on-dark);
 }
 
-.menu-grid .menu-card:nth-child(2) {
+.menu-card.menu-card-teal {
   background: var(--brand-teal);
   color: var(--on-dark);
 }
 
-.menu-grid .menu-card:nth-child(3) {
+.menu-card.menu-card-lavender {
   background: var(--brand-lavender);
   color: var(--ink);
 }
 
-.menu-grid .menu-card:nth-child(4) {
+.menu-card.menu-card-peach {
   background: var(--brand-peach);
   color: var(--ink);
 }
 
-.menu-grid .menu-card:nth-child(5) {
+.menu-card.menu-card-ochre {
   background: var(--brand-ochre);
   color: var(--ink);
 }
 
-.menu-grid .menu-card:nth-child(6) {
+.menu-card.menu-card-cream {
   background: var(--surface-card);
   color: var(--ink);
 }
@@ -466,9 +473,81 @@ h1, h2, h3 {
   opacity: 0.75;
 }
 
-@media (max-width: 768px) {
-  .menu-grid {
-    grid-template-columns: 1fr;
+/* Swiper 내비게이션 화살표 — 메뉴 섹션 톤에 맞춘 원형 아웃라인 버튼 */
+.menu-swiper-btn {
+  position: absolute;
+  top: 45%;
+  transform: translateY(-50%);
+  z-index: 10;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-pill);
+  background: var(--canvas);
+  border: 1px solid var(--hairline);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--ink);
+  padding: 0;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.menu-swiper-btn:hover {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: var(--on-primary);
+}
+
+.menu-swiper-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+.menu-swiper-prev {
+  left: -14px;
+}
+
+.menu-swiper-next {
+  right: -14px;
+}
+
+/* Swiper 페이지네이션 — Clay 팔레트 색상으로 오버라이드 */
+.menu-swiper-pagination {
+  position: relative;
+  margin-top: 24px;
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+}
+
+.menu-swiper-pagination .swiper-pagination-bullet {
+  background: var(--muted-soft);
+  opacity: 1;
+  margin: 0 !important;
+}
+
+.menu-swiper-pagination .swiper-pagination-bullet-active {
+  background: var(--ink);
+}
+
+@media (max-width: 640px) {
+  .menu-swiper-prev {
+    left: -6px;
+  }
+
+  .menu-swiper-next {
+    right: -6px;
+  }
+
+  .menu-swiper-btn {
+    width: 36px;
+    height: 36px;
+  }
+
+  .menu-swiper-btn svg {
+    width: 16px;
+    height: 16px;
   }
 }
 

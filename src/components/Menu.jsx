@@ -1,5 +1,25 @@
 import { useState } from 'react';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay, Pagination, Navigation } from 'swiper/modules';
+
+// Swiper 기본 구조 CSS (레이아웃/슬라이드 트랜지션에 필요)
+import 'swiper/css';
+import 'swiper/css/pagination';
+// 내비게이션 화살표는 Swiper 기본 아이콘을 쓰지 않고 아래에서 커스텀 버튼으로 직접 구현하므로
+// 'swiper/css/navigation'은 불필요합니다 (Swiper 기본 화살표 스타일이 우리 버튼과 충돌하지 않도록 의도적으로 생략).
+
 import useReveal from '../hooks/useReveal.js';
+
+// Clay Do's: 카드 색상을 핑크 → 틸 → 라벤더 → 피치 → 오커 → 크림 순으로 순환
+// (Swiper loop 모드는 DOM에 슬라이드를 복제하므로 nth-child 대신 데이터 기반 클래스로 색을 고정합니다)
+const CARD_COLOR_CLASSES = [
+  'menu-card-pink',
+  'menu-card-teal',
+  'menu-card-lavender',
+  'menu-card-peach',
+  'menu-card-ochre',
+  'menu-card-cream',
+];
 
 const coffeeItems = [
   { icon: 'icon-americano', name: '달빛 블렌드 아메리카노', price: '4,500원', desc: '직접 로스팅한 시그니처 블렌드', best: true },
@@ -19,24 +39,75 @@ const dessertItems = [
   { icon: 'icon-croffle', name: '크로플', price: '5,500원', desc: '겉바속촉, 메이플 시럽과 함께' },
 ];
 
-function MenuGrid({ items, panel, active }) {
+function MenuCard({ item, colorClass }) {
   return (
-    <div className={`menu-grid${active ? ' active' : ''}`} data-panel={panel}>
-      {items.map((item) => (
-        <div className="menu-card" key={item.name}>
-          {item.best && <span className="menu-badge">BEST</span>}
-          <div className="menu-card-inner">
-            <div className="menu-info">
-              <h3 className="menu-name">{item.name}</h3>
-              <p className="menu-price">{item.price}</p>
-              <p className="menu-desc">{item.desc}</p>
-            </div>
-            <span className="menu-icon">
-              <svg aria-hidden="true"><use href={`#${item.icon}`} /></svg>
-            </span>
-          </div>
+    <div className={`menu-card ${colorClass}`}>
+      {item.best && <span className="menu-badge">BEST</span>}
+      <div className="menu-card-inner">
+        <div className="menu-info">
+          <h3 className="menu-name">{item.name}</h3>
+          <p className="menu-price">{item.price}</p>
+          <p className="menu-desc">{item.desc}</p>
         </div>
-      ))}
+        <span className="menu-icon">
+          <svg aria-hidden="true"><use href={`#${item.icon}`} /></svg>
+        </span>
+      </div>
+    </div>
+  );
+}
+
+// 좌/우 화살표: 메뉴 섹션 톤에 맞춘 원형 아웃라인 버튼 + 심플 셰브런 아이콘
+function ArrowIcon({ direction }) {
+  const d = direction === 'prev' ? 'M15 6 L9 12 L15 18' : 'M9 6 L15 12 L9 18';
+  return (
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path d={d} stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function MenuSwiper({ items, panel }) {
+  // 커피/디저트 탭이 동시에 마운트되는 일이 없도록 이미 위에서 조건부 렌더링하지만,
+  // 셀렉터 충돌을 원천 차단하기 위해 panel 접미사로 화살표/페이지네이션 클래스를 분리합니다.
+  const prevClass = `menu-swiper-prev-${panel}`;
+  const nextClass = `menu-swiper-next-${panel}`;
+  const paginationClass = `menu-swiper-pagination-${panel}`;
+
+  return (
+    <div className="menu-swiper-wrap">
+      <button type="button" className={`menu-swiper-btn menu-swiper-prev ${prevClass}`} aria-label="이전 메뉴">
+        <ArrowIcon direction="prev" />
+      </button>
+
+      <Swiper
+        className="menu-swiper"
+        modules={[Autoplay, Pagination, Navigation]}
+        loop
+        loopAdditionalSlides={3}
+        spaceBetween={24}
+        slidesPerView={3}
+        breakpoints={{
+          0: { slidesPerView: 1.15, spaceBetween: 16 },
+          640: { slidesPerView: 2, spaceBetween: 20 },
+          1024: { slidesPerView: 3, spaceBetween: 24 },
+        }}
+        autoplay={{ delay: 4000, disableOnInteraction: false, pauseOnMouseEnter: true }}
+        navigation={{ prevEl: `.${prevClass}`, nextEl: `.${nextClass}` }}
+        pagination={{ el: `.${paginationClass}`, clickable: true }}
+      >
+        {items.map((item, index) => (
+          <SwiperSlide key={item.name}>
+            <MenuCard item={item} colorClass={CARD_COLOR_CLASSES[index % CARD_COLOR_CLASSES.length]} />
+          </SwiperSlide>
+        ))}
+      </Swiper>
+
+      <button type="button" className={`menu-swiper-btn menu-swiper-next ${nextClass}`} aria-label="다음 메뉴">
+        <ArrowIcon direction="next" />
+      </button>
+
+      <div className={`menu-swiper-pagination ${paginationClass}`}></div>
     </div>
   );
 }
@@ -69,8 +140,9 @@ export default function Menu() {
           </button>
         </div>
 
-        <MenuGrid items={coffeeItems} panel="coffee" active={activeTab === 'coffee'} />
-        <MenuGrid items={dessertItems} panel="dessert" active={activeTab === 'dessert'} />
+        {/* 탭마다 독립된 Swiper 인스턴스를 마운트/언마운트 — 비활성 탭에서 autoplay가 계속 도는 것을 방지 */}
+        {activeTab === 'coffee' && <MenuSwiper items={coffeeItems} panel="coffee" />}
+        {activeTab === 'dessert' && <MenuSwiper items={dessertItems} panel="dessert" />}
       </div>
     </section>
   );
