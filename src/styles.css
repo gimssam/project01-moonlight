@@ -471,6 +471,11 @@ h1, h2, h3 {
   font-weight: 400;
   color: inherit;
   opacity: 0.75;
+  /* 설명 문구가 2줄로 줄바꿈되면서 카드(슬라이드) 높이가 늘어나는 것을 방지 —
+     항상 1줄로 고정해 커피/디저트 탭의 카드 높이를 동일하게 유지 */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* Swiper 내비게이션 화살표 — 메뉴 섹션 톤에 맞춘 원형 아웃라인 버튼 */
